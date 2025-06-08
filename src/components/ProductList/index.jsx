@@ -6,16 +6,18 @@ import { Header, PageLoader } from "components/commons";
 import { NoData, Input } from "neetoui";
 import { isEmpty } from "ramda";
 import { Search } from "neetoicons";
+import useDebounce from "hooks/useDebounce";
 
 
 const ProductList = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [searchKey, setSearchKey] = useState("");
+    const debouncedSearchKey = useDebounce(searchKey);
 
     const fetchProducts = async () => {
         try {
-            const data = await productsApi.fetch({ searchTerm: searchKey });
+            const data = await productsApi.fetch({ searchTerm: debouncedSearchKey });
             setProducts(data.products);
         } catch (error) {
             console.log("An error occurred:", error);
@@ -26,7 +28,7 @@ const ProductList = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, [searchKey]);
+    }, [debouncedSearchKey]);
 
     if (isLoading) {
         return (
