@@ -7,6 +7,7 @@ import { NoData, Input } from "neetoui";
 import { isEmpty } from "ramda";
 import { Search } from "neetoicons";
 import useDebounce from "hooks/useDebounce";
+import { without } from "ramda";
 
 
 const ProductList = () => {
@@ -14,6 +15,14 @@ const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [searchKey, setSearchKey] = useState("");
     const debouncedSearchKey = useDebounce(searchKey);
+    const [cartItems, setCartItems] = useState([]);
+
+    const toggleIsInCart = slug =>
+        setCartItems(prevCartItems =>
+            prevCartItems.includes(slug)
+                ? without([slug], cartItems)
+                : [slug, ...cartItems]
+        );
 
     const fetchProducts = async () => {
         try {
@@ -40,6 +49,7 @@ const ProductList = () => {
         <div className="flex h-screen flex-col">
             <div className="flex h-screen flex-col">
                 <Header
+                    cartItemsCount={cartItems.length}
                     title="Smile cart"
                     shouldShowBackButton={false}
                     actionBlock={
@@ -57,7 +67,8 @@ const ProductList = () => {
                 ) : (
                     <div className="grid grid-cols-2 justify-items-center gap-y-8 p-4 md:grid-cols-3 lg:grid-cols-4">
                         {products.map(product => (
-                            <ProductListItem key={product.slug} {...product} />
+                            <ProductListItem key={product.slug} {...product} isInCart={cartItems.includes(product.slug)}
+                                toggleIsInCart={() => toggleIsInCart(product.slug)} />
                         ))}
                     </div>)}
             </div>
