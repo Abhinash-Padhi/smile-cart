@@ -4,22 +4,31 @@ import axios from "axios";
 import { Spinner, Typography } from "neetoui";
 import { useState, useEffect } from "react";
 import productsApi from "apis/products";
+import { LeftArrow } from "neetoicons";
+import { useParams, useHistory } from "react-router-dom";
+import { Header, PageLoader } from "components/commons";
 
 const Product = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [product, setProduct] = useState({});
+  const { slug } = useParams();
+  const [isError, setIsError] = useState(false);
+  const history = useHistory();
 
   const fetchProduct = async () => {
     try {
-      const response = await productsApi.show();
+      const response = await productsApi.show(slug);
       setProduct(response);
     } catch (error) {
+      setIsError(true);
       console.log("An error occurred:", error);
     }
     finally {
       setIsLoading(false);
     }
   };
+
+  if (isError) return <PageNotFound />;
 
   useEffect(() => {
     fetchProduct();
@@ -31,25 +40,15 @@ const Product = () => {
   const discountPercentage = ((totalDiscounts / mrp) * 100).toFixed(1);
 
   if (isLoading) {
-    console.log(isLoading)
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <Spinner />
-      </div>
+      <PageLoader />
     );
   }
 
   return (
-    <div className="px-6 pb-6">
+    <>
 
-      <div>
-
-        <Typography className="py-2 text-4xl font-semibold" style="h1">
-          {name}
-        </Typography>
-        <hr className="border-2 border-black" />
-
-      </div>
+      <Header title={name} />
 
       <div className="mt-6 flex gap-4">
 
@@ -80,7 +79,7 @@ const Product = () => {
 
       </div>
 
-    </div>
+    </>
   );
 }
 
