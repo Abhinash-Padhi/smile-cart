@@ -1,21 +1,29 @@
 import { Left, Right } from "neetoicons";
 import { Button } from "neetoui";
-import { useState,useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Carousel = ({ imageUrls, title }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const timerRef = useRef(null);
+
+    const resetTimer = () => {
+        clearInterval(timerRef.current);
+        timerRef.current = setInterval(handleNext, 3000);
+    };
 
     const handleNext = () =>
         setCurrentIndex(prevIndex => (prevIndex + 1) % imageUrls.length);
 
-    const handlePrevious = () =>
+    const handlePrevious = () => {
         setCurrentIndex(
             prevIndex => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
+        resetTimer();
+    }
 
     useEffect(() => {
-        const interval = setInterval(handleNext, 3000);
+        timerRef.current = setInterval(handleNext, 3000);
 
-        return () => clearInterval(interval);
+        return () => clearInterval(timerRef.current);
     }, []);
 
 
@@ -34,7 +42,10 @@ const Carousel = ({ imageUrls, title }) => {
                     className="shrink-0 focus-within:ring-0 hover:bg-transparent"
                     icon={Right}
                     style="text"
-                    onClick={handleNext}
+                    onClick={() => {
+                        handleNext();
+                        resetTimer();
+                    }}
                 />
             </div>
             <div className="flex space-x-1">
@@ -51,7 +62,10 @@ const Carousel = ({ imageUrls, title }) => {
                         <span
                             className={dotClassNames}
                             key={index}
-                            onClick={() => setCurrentIndex(index)}
+                            onClick={() => {
+                                setCurrentIndex(index);
+                                resetTimer();
+                            }}
                         />
                     );
                 })}
