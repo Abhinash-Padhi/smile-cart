@@ -7,6 +7,7 @@ import productsApi from "apis/products";
 import { LeftArrow } from "neetoicons";
 import { useParams, useHistory } from "react-router-dom";
 import { Header, PageLoader } from "components/commons";
+import AddToCart from "components/commons/AddToCart";
 
 const Product = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -74,6 +75,7 @@ const Product = () => {
           <Typography className="font-semibold text-green-600">
             {discountPercentage}% off
           </Typography>
+          <AddToCart {...{ slug }} />
 
         </div>
 

@@ -27,10 +27,14 @@ import routes from "routes";
 import ProductList from "./components/ProductList";
 import Product from "./components/Product";
 import { PageNotFound } from "components/commons";
+import { useState } from "react";
+import CartItemsContext from "./contexts/CartItemsContext";
 
-const App = () => (
-    <>
-        {/* <div className="flex space-x-2">
+const App = () => {
+    const [cartItems, setCartItems] = useState([]);
+    return (
+        <>
+            {/* <div className="flex space-x-2">
             <NavLink exact activeClassName="underline font-bold" to="/">
                 Home
             </NavLink>
@@ -38,13 +42,16 @@ const App = () => (
                 Product
             </NavLink>
         </div> */}
-        <Switch>
-            <Route exact component={Product} path={routes.products.show} />
-            <Route exact component={ProductList} path={routes.products.index} />
-            <Redirect exact from={routes.root} to={routes.products.index} />
-            <Route component={PageNotFound} path="*" />
-        </Switch>
-    </>
-);
+            <CartItemsContext.Provider value={[cartItems, setCartItems]}>
+                <Switch>
+                    <Route exact component={Product} path={routes.products.show} />
+                    <Route exact component={ProductList} path={routes.products.index} />
+                    <Redirect exact from={routes.root} to={routes.products.index} />
+                    <Route component={PageNotFound} path="*" />
+                </Switch>
+            </CartItemsContext.Provider>
+        </>
+    );
+}
 
 export default App;
