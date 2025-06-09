@@ -1,9 +1,8 @@
 import classNames from "classnames";
-import { Typography } from "neetoui";
+import { Button, Typography } from "neetoui";
 import { gt, keys } from "ramda";
-import useCartItemsStore from "stores/useCartItemsStore";
-import { Button } from "neetoui";
 import routes from "routes";
+import useCartItemsStore from "stores/useCartItemsStore";
 
 const PriceCard = ({ totalMrp, totalOfferPrice }) => {
     const totalDiscounts = totalMrp - totalOfferPrice;
@@ -19,24 +18,30 @@ const PriceCard = ({ totalMrp, totalOfferPrice }) => {
                     "line-through": isDiscountPresent,
                 })}
             >
-                Total MRP: <span>${totalMrp}</span>
+                Total MRP:
+                <span>${totalMrp}</span>
             </Typography>
+
             {isDiscountPresent && (
                 <>
                     <Typography className="flex justify-between text-green-700">
-                        Total discounts:{" "}
+                        Total discounts:
                         <span>
                             ${totalDiscounts} ({discountPercentage}%)
                         </span>
                     </Typography>
+
                     <Typography className="flex justify-between">
-                        Total offer price: <span>${totalOfferPrice}</span>
+                        Total offer price:
+                        <span>${totalOfferPrice}</span>
                     </Typography>
+
                     <span className="neeto-ui-text-gray-500 text-sm">
                         {itemsCount} item(s)
                     </span>
                 </>
             )}
+
             <div className="flex flex-col items-center pt-4">
                 <Button
                     className="bg-neutral-800"
@@ -47,4 +52,5 @@ const PriceCard = ({ totalMrp, totalOfferPrice }) => {
         </div>
     );
 };
+
 export default PriceCard;
