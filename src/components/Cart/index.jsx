@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { Helmet } from "react-helmet";
 import productsApi from "apis/products";
 import Header from "components/commons/Header";
 import { keys, isEmpty } from "ramda";
@@ -11,6 +11,8 @@ import ProductCard from "./ProductCard";
 import { cartTotalOf } from "components/utils";
 import { MRP, OFFER_PRICE } from "components/constants";
 import PriceCard from "./PriceCard";
+import i18n from "i18next";
+import withTitle from "utils/withTitle";
 
 const Cart = () => {
     const { cartItems, setSelectedQuantity } = useCartItemsStore();
@@ -84,4 +86,4 @@ const Cart = () => {
 
 };
 
-export default Cart;
+export default withTitle(Cart, i18n.t("cart.title"));

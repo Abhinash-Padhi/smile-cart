@@ -8,6 +8,7 @@ import { isEmpty } from "ramda";
 import { Search } from "neetoicons";
 import useDebounce from "hooks/useDebounce";
 import { without } from "ramda";
+import withTitle from "utils/withTitle";
 
 
 const ProductList = () => {
@@ -76,4 +77,4 @@ const ProductList = () => {
     );
 }
 
-export default ProductList;
+export default withTitle(ProductList);

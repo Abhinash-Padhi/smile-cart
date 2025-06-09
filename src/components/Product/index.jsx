@@ -10,6 +10,8 @@ import { Header, PageLoader } from "components/commons";
 import AddToCart from "components/commons/AddToCart";
 import useSelectedQuantity from "components/hooks/useSelectedQuantity";
 import routes from "routes";
+import i18n from "i18next";
+import withTitle from "utils/withTitle";
 
 const Product = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -97,4 +99,4 @@ const Product = () => {
   );
 }
 
-export default Product;
+export default withTitle(Product, i18n.t("product"));
