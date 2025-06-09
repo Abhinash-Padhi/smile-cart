@@ -1,7 +1,7 @@
 import React from "react";
 import { ToastContainer } from "react-toastify";
 import ReactDOM from "react-dom/client";
-
+import "./common/i18n";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
