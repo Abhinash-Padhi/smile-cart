@@ -1,16 +1,22 @@
-import { Button } from "neetoui";
-import { paths } from "ramda";
-import { Input } from "neetoui";
-import useSelectedQuantity from "components/hooks/useSelectedQuantity";
-import TooltipWrapper from "components/TooltipWrapper";
-import { Toastr } from "neetoui";
 import { useRef } from "react";
-import { VALID_COUNT_REGEX } from "components/constants";
 
-const ProductQuantity = ({ slug, availableQuantity }) => {
-    const countInputFocus = useRef(null);
+import TooltipWrapper from "components/TooltipWrapper";
+import { VALID_COUNT_REGEX } from "components/constants";
+import useSelectedQuantity from "components/hooks/useSelectedQuantity";
+import { useShowProduct } from "hooks/reactQuery/useProductsApi";
+import { Toastr, Input, Button } from "neetoui";
+import { useTranslation } from "react-i18next";
+
+const ProductQuantity = ({ slug }) => {
+    const { t } = useTranslation();
+
     const { selectedQuantity, setSelectedQuantity } = useSelectedQuantity(slug);
 
+    const countInputFocus = useRef(null);
+
+    const { data: product = {} } = useShowProduct(slug);
+
+    const { availableQuantity } = product;
     const parsedSelectedQuantity = parseInt(selectedQuantity) || 0;
     const isNotValidQuantity = parsedSelectedQuantity >= availableQuantity;
 
@@ -19,7 +25,11 @@ const ProductQuantity = ({ slug, availableQuantity }) => {
         const isNotValidInputQuantity = parseInt(value) > availableQuantity;
 
         if (isNotValidInputQuantity) {
-            Toastr.error(`Only ${availableQuantity} units are available`, { autoClose: 2000 });
+            const errorMessage = t("error.quantityLimit", {
+                count: availableQuantity,
+            });
+
+            Toastr.error(errorMessage, { autoClose: 2000 });
             setSelectedQuantity(availableQuantity);
             countInputFocus.current.blur();
         } else if (VALID_COUNT_REGEX.test(value)) {
@@ -48,12 +58,12 @@ const ProductQuantity = ({ slug, availableQuantity }) => {
                 className="ml-2"
                 contentSize="2"
                 ref={countInputFocus}
-                onChange={handleSetCount}
                 value={selectedQuantity}
+                onChange={handleSetCount}
                 onClick={preventNavigation}
             />
             <TooltipWrapper
-                content="Reached maximum units"
+                content={t("reachedMaximumUnits")}
                 position="top"
                 showTooltip={isNotValidQuantity}
             >
