@@ -3,11 +3,12 @@ import { Typography } from "neetoui";
 import { useHistory } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import useCartItemsStore from "stores/useCartItemsStore";
-// import { useContext } from "react";
-// import CartItemsContext from "src/contexts/CartItemsContext";
+import { keys } from "ramda";
 
 const Header = ({ title, shouldShowBackButton = true, actionBlock, }) => {
-    const cartItemsCount = useCartItemsStore(store => store.cartItems.length);
+    const cartItemsCount = useCartItemsStore(
+        store => keys(store.cartItems).length
+    );
     const history = useHistory();
 
     return (
