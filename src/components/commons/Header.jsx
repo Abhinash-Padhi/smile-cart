@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import useCartItemsStore from "stores/useCartItemsStore";
 import { keys } from "ramda";
+import { Link } from "react-router-dom";
+import routes from "routes";
 
 const Header = ({ title, shouldShowBackButton = true, actionBlock, }) => {
     const cartItemsCount = useCartItemsStore(
@@ -32,7 +34,9 @@ const Header = ({ title, shouldShowBackButton = true, actionBlock, }) => {
                                 {cartItemsCount}
                             </span>
                         )}
-                        <AiOutlineShoppingCart size="2rem" />
+                        <Link to={routes.cart}>
+                            <AiOutlineShoppingCart size="2rem" />
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -1,18 +1,21 @@
 import Carousel from "./Carousel";
 import { isNotNil, append } from "ramda";
 import axios from "axios";
-import { Spinner, Typography } from "neetoui";
+import { Spinner, Typography, Button } from "neetoui";
 import { useState, useEffect } from "react";
 import productsApi from "apis/products";
 import { LeftArrow } from "neetoicons";
 import { useParams, useHistory } from "react-router-dom";
 import { Header, PageLoader } from "components/commons";
 import AddToCart from "components/commons/AddToCart";
+import useSelectedQuantity from "components/hooks/useSelectedQuantity";
+import routes from "routes";
 
 const Product = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [product, setProduct] = useState({});
   const { slug } = useParams();
+  const { selectedQuantity, setSelectedQuantity } = useSelectedQuantity(slug);
   const [isError, setIsError] = useState(false);
   const history = useHistory();
 
@@ -75,11 +78,20 @@ const Product = () => {
           <Typography className="font-semibold text-green-600">
             {discountPercentage}% off
           </Typography>
-          <AddToCart {...{ availableQuantity, slug }} />
+          <div className="flex space-x-10">
+            <AddToCart {...{ availableQuantity, slug }} />
+            <Button
+              className="bg-neutral-800 hover:bg-neutral-950"
+              label="Buy now"
+              size="large"
+              to={routes.checkout}
+              onClick={() => setSelectedQuantity(selectedQuantity || 1)}
+            />
+          </div>
 
         </div>
 
-      </div>
+      </div >
 
     </>
   );
