@@ -1,14 +1,16 @@
 import React from "react";
-import { ToastContainer } from "react-toastify";
+
+import initializeAxios from "apis/axios";
 import ReactDOM from "react-dom/client";
-import "./common/i18n";
+import { QueryClientProvider } from "react-query";
+import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import queryClient from "utils/queryClient";
+
 import App from "./App";
+import "./common/i18n";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import initializeAxios from "apis/axios";
-import { BrowserRouter } from "react-router-dom";
-import { QueryClientProvider } from "react-query";
-import queryClient from "utils/queryClient";
 
 initializeAxios();
 const root = ReactDOM.createRoot(document.getElementById("root"));
